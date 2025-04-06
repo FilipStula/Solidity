@@ -1,0 +1,3 @@
+[submodule "VScode projects/new_project/lib/forge-std"]
+	path = VScode projects/new_project/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
