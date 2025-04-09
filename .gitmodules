@@ -4,3 +4,9 @@
 [submodule "VScode projects/fundme/lib/forge-std"]
 	path = VScode projects/fundme/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "lib/chainlink-brownie-contracts"]
+	path = lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "VScode projects/fundme/lib/chainlink-brownie-contracts"]
+	path = VScode projects/fundme/lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
