@@ -4,9 +4,9 @@ pragma solidity ^0.8.24;
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 library etheriumConverter {
-    AggregatorV3Interface constant dataFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-    function getConverted() public view returns (int256) {
-        // prettier-ignore
+
+    function getConverted(address _dataFeed) public view returns (int256) {
+        AggregatorV3Interface dataFeed = AggregatorV3Interface(_dataFeed);
         (
             /* uint80 roundId */
             ,
@@ -20,9 +20,9 @@ library etheriumConverter {
         return answer * 1e10;
     }
 
-    function getUsd(uint256 number) public view returns (uint256) {
-        require(getConverted() > 0, "eth is negative");
-        uint256 convertedValue = uint256(getConverted());
+    function getUsd(uint256 number, address dataFeed) public view returns (uint256) {
+        require(getConverted(dataFeed) > 0, "eth is negative");
+        uint256 convertedValue = uint256(getConverted(dataFeed));
         return (number * convertedValue) / 1e18;
     }
 }

@@ -1,0 +1,5 @@
+fundMeTest:testAddFundersToList() (gas: 106849)
+fundMeTest:testDeposit() (gas: 37428)
+fundMeTest:testOwner() (gas: 14426)
+fundMeTest:testWithdraw() (gas: 90480)
+fundMeTest:testWithdrawFromMultipleFunders() (gas: 499185)

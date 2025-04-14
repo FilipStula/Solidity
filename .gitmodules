@@ -10,3 +10,6 @@
 [submodule "VScode projects/fundme/lib/chainlink-brownie-contracts"]
 	path = VScode projects/fundme/lib/chainlink-brownie-contracts
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "VScode projects/fundme/lib/foundry-devops"]
+	path = VScode projects/fundme/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
