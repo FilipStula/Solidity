@@ -13,3 +13,6 @@
 [submodule "VScode projects/fundme/lib/foundry-devops"]
 	path = VScode projects/fundme/lib/foundry-devops
 	url = https://github.com/Cyfrin/foundry-devops
+[submodule "VScode projects/foundryLottery/lib/forge-std"]
+	path = VScode projects/foundryLottery/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
