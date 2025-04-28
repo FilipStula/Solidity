@@ -16,3 +16,6 @@
 [submodule "VScode projects/foundryLottery/lib/forge-std"]
 	path = VScode projects/foundryLottery/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "VScode projects/foundryLottery/lib/chainlink-brownie-contracts"]
+	path = VScode projects/foundryLottery/lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
