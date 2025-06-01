@@ -19,3 +19,9 @@
 [submodule "VScode projects/foundryLottery/lib/chainlink-brownie-contracts"]
 	path = VScode projects/foundryLottery/lib/chainlink-brownie-contracts
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "VScode projects/foundryLottery/lib/solmate"]
+	path = VScode projects/foundryLottery/lib/solmate
+	url = https://github.com/transmissions11/solmate
+[submodule "VScode projects/foundryLottery/lib/foundry-devops"]
+	path = VScode projects/foundryLottery/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops

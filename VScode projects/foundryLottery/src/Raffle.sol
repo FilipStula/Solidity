@@ -77,8 +77,11 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
     // Events
     event RaffleEnter(address indexed player); // indexed means that we can filter the events in the logs, so we can find the event easier
-    // indexed is used, when this transaction,
+    // indexed is used
     event WinnerPicked(address indexed winner); // when the winner is picked, we emit the event with the address of the winner
+    event RequestId(uint256 indexed requestId); // when the request id is created, we emit the event with the request id
+
+    // INDEXED variables are also somethimes called TOPICS especiall when we record logs
 
     constructor(
         uint256 raffleEnteranceFee,
@@ -100,13 +103,6 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
         s_owner = msg.sender;
 
         s_raffleState = RaffleState.OPEN; // set the state of the raffle to open
-    }
-
-    modifier OnlyOwner() {
-        if (msg.sender != s_owner) {
-            revert("Only owner can call this function");
-        }
-        _;
     }
 
     function enterRaffle() public payable {
@@ -179,6 +175,9 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
                 extraArgs: VRFV2PlusClient._argsToBytes(VRFV2PlusClient.ExtraArgsV1({nativePayment: false}))
             })
         );
+        emit RequestId(s_requestId); // emit the event with the request id
+
+
     }
 
     // Checks, Effects, Interactions
@@ -189,7 +188,7 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             // if the raffle is not calculating, we cant pick a winner
             revert fulfillRandomWords_ContractAlreadyPickingAWinner();
         }
-
+         
         // Effects on the blockchain
         s_raffleState = RaffleState.CALCULATING; // set the state of the raffle to calculating, in this case,, noone can enter the raffle
         console.log("Request ID: ", requestId);
@@ -221,5 +220,9 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
     function getRaffleState() public view returns (RaffleState) {
         return s_raffleState;
+    }
+
+    function getRequestId() public view returns (uint256) {
+        return s_requestId;
     }
 }

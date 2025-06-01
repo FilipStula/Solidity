@@ -2,9 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
-import {Script} from "../lib/forge-std/src/Script.sol";
+import {LinkToken} from "../test/mocks/LinkToken.sol";
 
-contract helperConfig is Script{
+contract helperConfig {
     struct NetworkConfig {
         uint256 enteranceFee;
         uint256 interval;
@@ -12,56 +12,51 @@ contract helperConfig is Script{
         bytes32 keyHash;
         uint256 subId;
         uint32 callbackGasLimit;
-        uint256 chainId;
+        address link;
     }
 
-    uint256 public constant ENTERANCE_FEE = 1e10 wei;
-    uint256 public constant SEPOLIA_CHAIN_ID = 11155111;
-    uint256 public constant LOCAL_CHAIN_ID = 31337;
     NetworkConfig public config;
     VRFCoordinatorV2_5Mock public vrfCoordinatorMock;
-    uint256 public i_mock_subId;
+    address public constant SEPOLIA_VRF_COORDINATOR = 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B;
+    address public constant SEPOLIA_LINK_TOKEN_FAUCET = 0x779877A7B0D9E8603169DdbD7836e478b4624789;
+    bytes32 public constant VRF_KEYHASH = 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
 
     constructor() {
-        if (block.chainid == 11155111) {
-            // Sepolia
-            config = getSepoliaConfig();
-        } else {
-            // Localhost
-            config = getOrCreateMockConfig();
-        }
+        config = block.chainid == 11155111 ? getSepoliaConfig() : getOrCreateMockConfig();
     }
 
-    function getSepoliaConfig() public returns (NetworkConfig memory) {
+    function getSepoliaConfig() private pure returns (NetworkConfig memory) {
         return NetworkConfig({
-            enteranceFee: ENTERANCE_FEE,
+            enteranceFee: 1e10,
             interval: 30 seconds,
-            vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
-            keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            subId: 0,
+            vrfCoordinator: SEPOLIA_VRF_COORDINATOR,
+            keyHash: VRF_KEYHASH,
+            subId: 32008119771176468897711766039513295420481410895500955993081283012182731217213, // my subId which i created on chainlink, this really exists
             callbackGasLimit: 500000,
-            chainId: SEPOLIA_CHAIN_ID
+            link: SEPOLIA_LINK_TOKEN_FAUCET
         });
     }
 
-    function getOrCreateMockConfig() public returns (NetworkConfig memory) {
-        vrfCoordinatorMock = new VRFCoordinatorV2_5Mock(0.001 ether, 1e9, 1e17); //creates a VRF mock instance
-        // the values that are here need to be like this, othervise it wont work
-        i_mock_subId = vrfCoordinatorMock.createSubscription();
-        vrfCoordinatorMock.fundSubscription(i_mock_subId, 10000 ether); // funding the newly created subscription
+    function getOrCreateMockConfig() private returns (NetworkConfig memory) {
+        vrfCoordinatorMock = new VRFCoordinatorV2_5Mock(0.25 ether, 1e9, 4e15);
 
+        LinkToken linkToken = new LinkToken(); // creating mock tokens to fund subscription with
         return NetworkConfig({
-            enteranceFee: ENTERANCE_FEE,
+            enteranceFee: 1e10,
             interval: 30 seconds,
             vrfCoordinator: address(vrfCoordinatorMock),
-            keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            subId: i_mock_subId,
+            keyHash: VRF_KEYHASH,
+            subId: 0,
             callbackGasLimit: 500000,
-            chainId: LOCAL_CHAIN_ID
+            link: address(linkToken)
         });
     }
 
-    function getConfig() public view returns (NetworkConfig memory) {
+    function getConfig() external view returns (NetworkConfig memory) {
         return config;
+    }
+
+    function setSubId(uint256 subId) external {
+        config.subId = subId;
     }
 }
