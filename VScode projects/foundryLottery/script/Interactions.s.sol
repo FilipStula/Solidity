@@ -34,7 +34,7 @@ contract CreateSubscription is Script {
 }
 
 contract FundSubscription is Script {
-    uint256 public constant FUND_AMOUNT = 3 * 1e18; // this will be 3 LINK when tokens are implemented
+    uint256 public constant FUND_AMOUNT = 200 * 1e18; // this will be 3 LINK when tokens are implemented
 
     function fundSubscriptionUsingConfig() public {
         helperConfig helper = new helperConfig();
@@ -55,7 +55,7 @@ contract FundSubscription is Script {
         if (block.chainid == 31337) {
             console.log("Funding subscription with mock tokens...");
             vm.startBroadcast();
-           VRFCoordinatorV2_5Mock(vrfCoordinator).fundSubscription(subId, FUND_AMOUNT); // just fund it with some fake ether, it doesnt matter that much
+            VRFCoordinatorV2_5Mock(vrfCoordinator).fundSubscription(subId, FUND_AMOUNT); // just fund it with some fake ether, it doesnt matter that much
             vm.stopBroadcast();
         } else {
             console.log("Funding subscription with LINK...");
@@ -78,7 +78,6 @@ contract AddConsumer is Script {
         address vrfCoordinator = helper.getConfig().vrfCoordinator;
 
         addConsumer(vrfCoordinator, subId, consumer);
-
     }
 
     function addConsumer(address vrfCoordinator, uint256 subId, address consumer) public {

@@ -9,6 +9,7 @@ import {CreateSubscription, FundSubscription, AddConsumer} from "./Interactions.
 
 contract DeployRaffle is Script {
     Raffle public raffleInstance;
+
     function deployRaffle() public returns (Raffle, helperConfig) {
         helperConfig helper = new helperConfig();
         helperConfig.NetworkConfig memory config = helper.getConfig();
@@ -22,11 +23,9 @@ contract DeployRaffle is Script {
 
             FundSubscription fundSub = new FundSubscription();
 
-            fundSub.fundSubscription(
-                helper.getConfig().vrfCoordinator, helper.getConfig().subId, config.link
-            );
-
+            fundSub.fundSubscription(helper.getConfig().vrfCoordinator, helper.getConfig().subId, config.link);
         }
+        vm.startBroadcast();
         raffleInstance = new Raffle(
             helper.getConfig().enteranceFee,
             helper.getConfig().interval,
@@ -35,11 +34,10 @@ contract DeployRaffle is Script {
             helper.getConfig().keyHash,
             helper.getConfig().callbackGasLimit
         );
-        
+        vm.stopBroadcast();
         AddConsumer addConsumer = new AddConsumer();
 
         addConsumer.addConsumer(config.vrfCoordinator, helper.getConfig().subId, address(raffleInstance));
-
 
         return (raffleInstance, helper);
     }

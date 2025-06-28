@@ -116,6 +116,7 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             // if the raffle is not open, we cant enter
             revert enterRaffle_PickingWinnerInProgress();
         }
+        
 
         s_players.push(payable(msg.sender)); // add the player to the array
         emit RaffleEnter(msg.sender); // emit the event, the same address that was we pushed to the array
@@ -164,7 +165,7 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             );
             // we can add cetain values to the errors, so when we debbug them later, we can see the state of the values in the moment the error was called
         }
-        s_raffleState = RaffleState.CALCULATING; // set the state of the raffle to calculating, in this case,, noone can enter the raffle
+        s_raffleState = RaffleState.CALCULATING; // set the state of the raffle to calculating, in this case, noone can enter the raffle
         s_requestId = s_vrfCoordinator.requestRandomWords( //Requesting random words from Chainlink VRF
             VRFV2PlusClient.RandomWordsRequest({
                 keyHash: i_keyHash,
@@ -176,8 +177,6 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             })
         );
         emit RequestId(s_requestId); // emit the event with the request id
-
-
     }
 
     // Checks, Effects, Interactions
@@ -188,7 +187,7 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             // if the raffle is not calculating, we cant pick a winner
             revert fulfillRandomWords_ContractAlreadyPickingAWinner();
         }
-         
+
         // Effects on the blockchain
         s_raffleState = RaffleState.CALCULATING; // set the state of the raffle to calculating, in this case,, noone can enter the raffle
         console.log("Request ID: ", requestId);
@@ -224,5 +223,13 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
     function getRequestId() public view returns (uint256) {
         return s_requestId;
+    }
+
+    function getLatestWinner() public view returns (address) {
+        // return the last winner of the raffle
+        if (winners.length == 0) {
+            return address(0); // if there are no winners, return address 0
+        }
+        return winners[winners.length - 1]; // return the last winner
     }
 }
