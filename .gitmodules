@@ -25,3 +25,6 @@
 [submodule "VScode projects/foundryLottery/lib/foundry-devops"]
 	path = VScode projects/foundryLottery/lib/foundry-devops
 	url = https://github.com/Cyfrin/foundry-devops
+[submodule "VScode projects/erc20/lib/forge-std"]
+	path = VScode projects/erc20/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
