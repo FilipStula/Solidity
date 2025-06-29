@@ -28,3 +28,6 @@
 [submodule "VScode projects/erc20/lib/forge-std"]
 	path = VScode projects/erc20/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "VScode projects/erc20/lib/openzeppelin-contracts"]
+	path = VScode projects/erc20/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
